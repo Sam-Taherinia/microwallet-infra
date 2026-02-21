@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: microwallet-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: userdb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db # Persists MongoDB data outside the container in a named volume, so data survives container restarts.
+
+  postgres:
+    image: postgres:15
+    container_name: microwallet-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: wallet
+      POSTGRES_PASSWORD: wallet123
+      POSTGRES_DB: walletdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes: # Defines named volumes for MongoDB and PostgreSQL data persistence. These ensure that MongoDB and PostgreSQL data survive container recreation.
+  mongo_data:
+  postgres_data:
